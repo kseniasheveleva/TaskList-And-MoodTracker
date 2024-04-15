@@ -6,6 +6,9 @@ import "./pages/home/home.component";
 import "./pages/not-found/not-found.component";
 import "./pages/sign-in/sign-in.component";
 import "./pages/sign-up/sign-up.component";
+
+import "./components/button/button.component";
+import "./components/input/input.component";
 import { ROUTES } from "./constants/routes";
 
 export class App extends Component {
