@@ -6,10 +6,14 @@ import "./pages/home/home.component";
 import "./pages/not-found/not-found.component";
 import "./pages/sign-in/sign-in.component";
 import "./pages/sign-up/sign-up.component";
+import "./pages/user-home/user-home.component";
 
 import "./components/button/button.component";
 import "./components/input/input.component";
+import "./components/loader/loader.component";
 import { ROUTES } from "./constants/routes";
+import { useUserStore } from "./hooks/useUserStore";
+import { authService } from "./services/Auth";
 
 export class App extends Component {
   constructor() {
@@ -17,7 +21,35 @@ export class App extends Component {
     this.template = template({
       routes: ROUTES,
     });
-    this.state = {};
+    this.state = {
+      isLoading: false,
+    };
+  }
+
+  toggleIsLoading = () => {
+    this.setState({
+      ...this.state,
+      isLoading: !this.state.isLoading,
+    });
+  };
+
+  initializeApp() {
+    this.toggleIsLoading();
+    const { setUser } = useUserStore();
+    authService
+      .authorizeUser()
+      .then((user) => {
+        if (user.uid) {
+          setUser({ ...user });
+        }
+      })
+      .finally(() => {
+        this.toggleIsLoading();
+      });
+  }
+
+  componentDidMount() {
+    this.initializeApp();
   }
 }
 
