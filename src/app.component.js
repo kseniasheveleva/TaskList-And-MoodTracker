@@ -39,6 +39,7 @@ export class App extends Component {
     authService
       .authorizeUser()
       .then((user) => {
+        console.log(user);
         if (user.uid) {
           setUser({ ...user });
         }
