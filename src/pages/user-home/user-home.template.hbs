@@ -1,6 +1,5 @@
-<div class="min-h-screen flex flex-col relative">
   <ui-loader loading="{{isLoading}}" class-name="bg-white/70 z-10"></ui-loader>
-  <div class="gap-3">
+<div class="min-h-screen grid grid-rows-layout">
     <header class="flex h-24 border-2 items-center justify-between p-5 bg-violet-100">
       <div class="user flex gap-3 items-center">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" alt="user"
@@ -13,12 +12,44 @@
       </ui-button>
     </header>
 
-    <main class="flex-1 pr-2">
-      <div class="routes flex flex-wrap mt-3 p-5 gap-4">
-        <div class="routes__mood-track"></div>
-        <div class="routes__todo"></div>
-        <div class="routes__diary"></div>
+    <main class="mt-3">
+      <div class="routes flex flex-wrap p-5 pt-44 gap-24 justify-center">
+        <div class="routes__nav-card h-72 bg-violet-300 rounded-lg flex">
+          <div class="routes__container border m-3 rounded-md flex items-center">
+            <div class="">
+              <router-link 
+              href="${props.routes.home}" 
+              label="Mood tracker" 
+              class="text-5xl text-lime-950 p-12">
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="routes__nav-card h-72 bg-violet-300 rounded-lg flex">
+          <div class="routes__container border m-3 rounded-md flex items-center">
+            <div class="">
+              <router-link 
+              href="${props.routes.home}" 
+              label="ToDo" 
+              class="text-5xl text-lime-950 p-12">
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="routes__nav-card h-72 bg-violet-300 rounded-lg flex">
+          <div class="routes__container border m-3 rounded-md flex items-center">
+            <div class="">
+              <router-link 
+              href="${props.routes.home}" 
+              label="Diary" 
+              class="text-5xl text-lime-950 p-12">
+              </router-link>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </main>
-  </div>
 </div>
+
+
