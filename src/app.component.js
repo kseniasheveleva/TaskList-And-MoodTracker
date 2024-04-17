@@ -11,9 +11,11 @@ import "./pages/user-home/user-home.component";
 import "./components/button/button.component";
 import "./components/input/input.component";
 import "./components/loader/loader.component";
+import "./components/toast/toast.component";
 import { ROUTES } from "./constants/routes";
 import { useUserStore } from "./hooks/useUserStore";
 import { authService } from "./services/Auth";
+import { useToastNotification } from "./hooks/useToastNavigation";
 
 export class App extends Component {
   constructor() {
@@ -43,6 +45,9 @@ export class App extends Component {
         if (user.uid) {
           setUser({ ...user });
         }
+      })
+      .catch((error) => {
+        useToastNotification({ message: error.message });
       })
       .finally(() => {
         this.toggleIsLoading();

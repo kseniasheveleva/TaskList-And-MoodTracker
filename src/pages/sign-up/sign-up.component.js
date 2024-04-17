@@ -1,6 +1,8 @@
 import { ROUTES } from "../../constants/routes";
+import { TOAST_TYPE } from "../../constants/toast";
 import { Component } from "../../core/Component";
 import { useNavigate } from "../../hooks/useNavigate";
+import { useToastNotification } from "../../hooks/useToastNavigation";
 import { useUserStore } from "../../hooks/useUserStore";
 import { authService } from "../../services/Auth";
 import { extractFormData } from "../../utils/extractFormData";
@@ -31,8 +33,15 @@ export class SignUp extends Component {
     authService.signUp(formData.email, formData.password)
     .then((data) => {
       setUser({ ...data.user });
+      useToastNotification({
+          message: "Success!!!",
+          type: TOAST_TYPE.success,
+      });
       useNavigate(ROUTES.userHome)
     })
+    .catch((error) => {
+        useToastNotification({ message: error.message });
+      })
     .finally(() => {
       this.toggleIsLoading();
     })
