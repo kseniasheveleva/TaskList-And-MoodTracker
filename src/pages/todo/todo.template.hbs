@@ -40,9 +40,19 @@
         <i class="icon-badge-plus create-task"></i>
       </div>
       <div class="todo__tasks">
-        <div class="category-content todo__major major hidden">major</div>
-        <div class="category-content todo__minor minor hidden">minor</div>
-        <div class="category-content todo__trivial trivial hidden">trivial</div>
+        <div class="category-content todo__major major hidden">
+          {{#each tasks}}
+            <ui-task-card title="{{this.title}}" description="{{this.description}}"></ui-task-card>
+          {{/each}}
+        </div>
+        <div class="category-content todo__minor minor hidden">
+          
+
+        </div>
+        <div class="category-content todo__trivial trivial hidden">
+          
+
+        </div>
       </div>
     </div>
   </div>

@@ -8,6 +8,7 @@ import { TOAST_TYPE } from "../../constants/toast";
 import { useUserStore } from "../../hooks/useUserStore";
 import { mapResponseApiData } from "../../utils/api";
 import { extractFormData } from "../../utils/extractFormData";
+import { createTaskApi, getTaskApi } from "../../api/tasks";
 
 
 export class ToDo extends Component {
@@ -18,7 +19,7 @@ export class ToDo extends Component {
     this.state = {
       user: null,
       isLoading: false,
-      categories: [],
+      tasks: [],
     }
   }
 
@@ -36,9 +37,45 @@ export class ToDo extends Component {
       isOpen: true,
       title: 'Create Task',
       template: 'ui-create-task-form',
-      
+      onSuccess: (modal) => {
+        const form = modal.querySelector(".create-task-form");
+        const formData = extractFormData(form);
+        this.toggleIsLoading();
+        createTaskApi(this.state.user.uid, formData)
+          .then(({ data }) => {
+            useToastNotification({
+              message: "Success!",
+              type: TOAST_TYPE.success,
+            });
+          })
+          .catch(({ message }) => {
+            useToastNotification({ message });
+          })
+          .finally(() => {
+            this.toggleIsLoading();
+          });
+      },
     })
   }
+
+  loadAllTasks = () => {
+    if (this.state.user?.uid) {
+      this.toggleIsLoading();
+      getTaskApi(this.state.user.uid)
+        .then(({ data }) => {
+          this.setState({
+            ...this.state,
+            tasks: data ? mapResponseApiData(data) : [],
+          });
+        })
+        .catch(({ message }) => {
+          useToastNotification({ message });
+        })
+        .finally(() => {
+          this.toggleIsLoading();
+        });
+    }
+  };
 
   // __________________CATEGORY
 
@@ -84,6 +121,7 @@ export class ToDo extends Component {
 
   componentDidMount() {
     this.setUser();
+    this.loadAllTasks();
     this.addEventListener('click', this.onClick);
   }
 
