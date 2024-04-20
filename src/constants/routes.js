@@ -4,4 +4,5 @@ export const ROUTES = {
   signUp: "/sign-up",
   notFound: "/404",
   userHome: "/h",
+  todo: "/todo"
 }

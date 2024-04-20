@@ -1,20 +1,20 @@
   <ui-loader loading="{{isLoading}}" class-name="bg-white/70 z-10"></ui-loader>
-<div class="min-h-screen grid grid-rows-layout">
-    <header class="flex h-24 border-2 items-center justify-between p-5 bg-violet-100">
+<div class="min-h-screen grid grid-rows-layout bg-slate-800">
+    <header class="flex h-24 border-2 items-center justify-between py-5 px-24 bg-violet-100">
       <div class="user flex gap-3 items-center">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" alt="user"
           class="user__img rounded-full w-14 h-14"/>
-        <a href="mailto:{{user.email}}" class="user__email">{{user.email}}</a>
+        <p class="text-xl">{{user.displayName}}</p>
       </div>
       <ui-button
         caption="LogOut"
-        class-name="logout-btn mt-0 hover:text-indigo-900">
+        class-name="logout-btn mt-0 hover:text-indigo-900 text-xl">
       </ui-button>
     </header>
 
     <main class="mt-3">
       <div class="routes flex flex-wrap p-5 pt-44 gap-24 justify-center">
-        <div class="routes__nav-card h-72 bg-violet-300 rounded-lg flex">
+        <div class="routes__nav-card h-72 bg-violet-200 hover:bg-violet-300 rounded-lg flex">
           <div class="routes__container border m-3 rounded-md flex items-center">
             <div class="">
               <router-link 
@@ -25,18 +25,18 @@
             </div>
           </div>
         </div>
-        <div class="routes__nav-card h-72 bg-violet-300 rounded-lg flex">
+        <div class="routes__nav-card h-72 bg-violet-200 hover:bg-violet-300 rounded-lg flex">
           <div class="routes__container border m-3 rounded-md flex items-center">
             <div class="">
               <router-link 
-              href="${props.routes.home}" 
+              href="${props.routes.todo}" 
               label="ToDo" 
               class="text-5xl text-lime-950 p-12">
               </router-link>
             </div>
           </div>
         </div>
-        <div class="routes__nav-card h-72 bg-violet-300 rounded-lg flex">
+        <div class="routes__nav-card h-72 bg-violet-200 hover:bg-violet-300 rounded-lg flex">
           <div class="routes__container border m-3 rounded-md flex items-center">
             <div class="">
               <router-link 

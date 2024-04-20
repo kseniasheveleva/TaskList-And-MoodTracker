@@ -6,6 +6,9 @@ export default {
       gridTemplateRows: {
         layout: "max-content 1fr max-content",
       },
+      gridTemplateColumns: {
+        layout: "max-content 1fr max-content",
+      },
     },
   },
   plugins: [require("tailwindcss-animated")],

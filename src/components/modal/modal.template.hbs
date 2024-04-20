@@ -1,0 +1,39 @@
+{{#if isOpen}}
+<div class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black/[0.5]">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow animate-fade-down animate-duration-500">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          {{title}}
+        </h3>
+        <button type="button"
+          class="modal-reject-trigger text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-lg w-8 h-8 ms-auto inline-flex justify-center items-center"
+          data-modal-hide="default-modal">
+          <div class="icon-circle-x"></div>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4 modal-body max-h-[700px] overflow-auto">
+        {{#if confirmation}}
+        <p>{{confirmation}}</p>
+        {{/if}}
+      </div>
+      <!-- Modal footer -->
+      <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+        {{#if isError}}
+        <button disabled="{{isError}}"
+          class="modal-success-trigger text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">{{successCaption}}</button>
+        {{else}}
+        <button
+          class="modal-success-trigger text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">{{successCaption}}</button>
+        {{/if}}
+
+        <button
+          class="modal-reject-trigger py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">{{rejectCaption}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}

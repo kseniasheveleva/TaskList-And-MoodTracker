@@ -15,7 +15,8 @@
           Already have an account? <router-link href="${props.routes.signIn}" label="Login here" class="text-indigo-500"></router-link>
         </p>
         <form class="space-y-4 md:space-y-6  flex flex-col sign-in-form mt-12">
-          <ui-input type="email" name="email" label="Your email"></ui-input>
+          <ui-input type="text" name="displayName" label="Your Name"></ui-input>
+          <ui-input type="email" name="email" label="Email"></ui-input>
           <ui-input type="password" name="password" label="Password"></ui-input>
           <ui-input type="password" name="confirm-password" label="Confirm password"></ui-input>
           <ui-button caption="Submit" class-name="block w-full"></ui-button>

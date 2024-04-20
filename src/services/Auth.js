@@ -3,7 +3,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import { firebaseService } from "./Firebase";
 
@@ -12,10 +13,18 @@ export class AuthService {
     this._auth = getAuth(firebaseService.app);
   }
 
+  getCurrentUser() {
+    return this._auth.currentUser;
+  }
+
+  updateUserProfile(data) {
+    return updateProfile(this._auth.currentUser, data);
+  }
+
   authorizeUser() {
     return new Promise((resolve, reject) => {
-      onAuthStateChanged(this._auth, resolve, reject)
-    })
+      onAuthStateChanged(this._auth, resolve, reject);
+    });
   }
 
   signIn(email, password) {

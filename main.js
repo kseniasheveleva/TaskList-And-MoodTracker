@@ -1,4 +1,4 @@
-import "lucide-static/font/Lucide.css";
+import ('lucide-static/font/Lucide.css');
 import "./style.css";
 
 import "./src/app.component";

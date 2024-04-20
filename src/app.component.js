@@ -7,11 +7,14 @@ import "./pages/not-found/not-found.component";
 import "./pages/sign-in/sign-in.component";
 import "./pages/sign-up/sign-up.component";
 import "./pages/user-home/user-home.component";
+import "./pages/todo/todo.components";
 
 import "./components/button/button.component";
 import "./components/input/input.component";
 import "./components/loader/loader.component";
 import "./components/toast/toast.component";
+import "./components/modal/modal.component";
+import "./components/create-task-form/create-task-form.component";
 import { ROUTES } from "./constants/routes";
 import { useUserStore } from "./hooks/useUserStore";
 import { authService } from "./services/Auth";
