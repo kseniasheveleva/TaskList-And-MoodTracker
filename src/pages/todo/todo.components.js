@@ -9,6 +9,7 @@ import { useUserStore } from "../../hooks/useUserStore";
 import { mapResponseApiData } from "../../utils/api";
 import { extractFormData } from "../../utils/extractFormData";
 import { createTaskApi, getTaskApi } from "../../api/tasks";
+import { createCategoryApi, getCategoryApi } from "../../api/categories";
 
 
 export class ToDo extends Component {
@@ -19,6 +20,7 @@ export class ToDo extends Component {
     this.state = {
       user: null,
       isLoading: false,
+      categories: [],
       tasks: [],
     }
   }
@@ -60,13 +62,54 @@ export class ToDo extends Component {
 
   loadAllTasks = () => {
     if (this.state.user?.uid) {
+      const categoriesIds = this.state.categories.map(item => item.id.toString());
+      categoriesIds.forEach((category) => {
+        this.toggleIsLoading();
+        getTaskApi(this.state.user.uid)
+          .then(({ data }) => {
+            this.setState({
+              ...this.state,
+              tasks: data ? mapResponseApiData(data) : [],
+            });
+          })
+          .catch(({ message }) => {
+            useToastNotification({ message });
+          })
+          .finally(() => {
+            this.toggleIsLoading();
+          });
+      })
+    }
+  };
+
+  // __________________CATEGORY
+
+
+  // showActiveTab = (currentCategory) => {
+  //   const categories = Array.from(document.querySelectorAll('.category'));
+  //   const content = Array.from(document.querySelectorAll('.category-content'));
+
+  //   const categoryContentClass = currentCategory.getAttribute('data-type');
+  //   const currentContent = document.querySelector(`.${categoryContentClass}`);
+
+  //   categories.forEach(item => item.classList.remove('active'));
+  //   content.forEach(item => item.classList.add('hidden'))
+  //   currentCategory.classList.add('active');
+  //   currentContent.classList.remove('hidden');
+  // }
+
+  loadAllCategories = () => {
+    if (this.state.user?.uid) {
       this.toggleIsLoading();
-      getTaskApi(this.state.user.uid)
+      getCategoryApi(this.state.user.uid)
         .then(({ data }) => {
           this.setState({
             ...this.state,
-            tasks: data ? mapResponseApiData(data) : [],
+            categories: data ? mapResponseApiData(data) : [],
           });
+          
+          const c = this.state.categories.map(item => item.id.toString())
+          console.log("массив из айди", c);
         })
         .catch(({ message }) => {
           useToastNotification({ message });
@@ -77,20 +120,31 @@ export class ToDo extends Component {
     }
   };
 
-  // __________________CATEGORY
-
-
-  showActiveTab = (currentCategory) => {
-    const categories = Array.from(document.querySelectorAll('.category'));
-    const content = Array.from(document.querySelectorAll('.category-content'));
-
-    const categoryContentClass = currentCategory.getAttribute('data-type');
-    const currentContent = document.querySelector(`.${categoryContentClass}`);
-
-    categories.forEach(item => item.classList.remove('active'));
-    content.forEach(item => item.classList.add('hidden'))
-    currentCategory.classList.add('active');
-    currentContent.classList.remove('hidden');
+  openCategoryModal = () => {
+    useModal({
+      isOpen: true,
+      title: 'Create Category',
+      template: 'ui-create-category-form',
+      onSuccess: (modal) => {
+        const form = modal.querySelector(".create-category-form");
+        const formData = extractFormData(form);
+        this.toggleIsLoading();
+        createCategoryApi(this.state.user.uid, formData)
+          .then(({ data }) => {
+            console.log(data);
+            useToastNotification({
+              message: "Success!",
+              type: TOAST_TYPE.success,
+            });
+          })
+          .catch(({ message }) => {
+            useToastNotification({ message });
+          })
+          .finally(() => {
+            this.toggleIsLoading();
+          });
+      },
+    })
   }
 
   onClick = ({  target }) => {
@@ -103,12 +157,12 @@ export class ToDo extends Component {
     }
 
     if (createCategoryBtn) {
-      return this.createCategoryModel()
+      return this.openCategoryModal()
     }
 
-    if (categoryBtn) {
-      this.showActiveTab(categoryBtn)
-    }
+    // if (categoryBtn) {
+    //   this.showActiveTab(categoryBtn)
+    // }
   }
 
   setUser() {
@@ -121,6 +175,7 @@ export class ToDo extends Component {
 
   componentDidMount() {
     this.setUser();
+    this.loadAllCategories();
     this.loadAllTasks();
     this.addEventListener('click', this.onClick);
   }

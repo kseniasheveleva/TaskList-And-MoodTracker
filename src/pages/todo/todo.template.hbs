@@ -19,18 +19,13 @@
         <i class="icon-badge-plus create-category"></i>
       </div>
       <div class="todo__categories space-y-4">
-        <button
-          data-type="major"
-          class="active category flex items-center justify-center text-lg h-16 w-full border border-lime-950 bg-purple-100">
-        Major</button>
-        <button
-          data-type="minor"
-          class="category flex items-center justify-center text-lg h-16 w-full border border-lime-950 bg-purple-100">
-        Minor</button>
-        <button
-          data-type="trivial"
-          class="category flex items-center justify-center text-lg h-16 w-full border border-lime-950 bg-purple-100">
-        Trivial</button>
+        {{#each categories}}
+          <button
+            data-type="{{this.title}}"
+            class="active category flex items-center justify-center text-lg h-16 w-full border border-lime-950 bg-purple-100">
+            {{this.title}}
+          </button>
+        {{/each}}
       </div>
     </div>
 
@@ -40,19 +35,9 @@
         <i class="icon-badge-plus create-task"></i>
       </div>
       <div class="todo__tasks">
-        <div class="category-content todo__major major hidden">
-          {{#each tasks}}
-            <ui-task-card title="{{this.title}}" description="{{this.description}}"></ui-task-card>
-          {{/each}}
-        </div>
-        <div class="category-content todo__minor minor hidden">
-          
-
-        </div>
-        <div class="category-content todo__trivial trivial hidden">
-          
-
-        </div>
+        <div class="category-content todo__major major hidden"></div>
+        <div class="category-content todo__minor minor hidden"></div>
+        <div class="category-content todo__trivial trivial hidden"></div>
       </div>
     </div>
   </div>

@@ -15,6 +15,7 @@ import "./components/loader/loader.component";
 import "./components/toast/toast.component";
 import "./components/modal/modal.component";
 import "./components/create-task-form/create-task-form.component";
+import "./components/create-category-form/create-category-form.component";
 import "./components/task-card/task-card.component";
 import { ROUTES } from "./constants/routes";
 import { useUserStore } from "./hooks/useUserStore";
