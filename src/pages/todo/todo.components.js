@@ -2,7 +2,6 @@ import { ROUTES } from "../../constants/routes";
 import { Component } from "../../core/Component";
 import { useModal } from "../../hooks/useModal";
 import template from "./todo.template.hbs";
-import { useNavigate } from "../../hooks/useNavigate";
 import { useToastNotification } from "../../hooks/useToastNavigation";
 import { TOAST_TYPE } from "../../constants/toast";
 import { useUserStore } from "../../hooks/useUserStore";
@@ -45,6 +44,7 @@ export class ToDo extends Component {
         this.toggleIsLoading();
         createTaskApi(this.state.user.uid, formData)
           .then(({ data }) => {
+            this.loadAllTasks()
             useToastNotification({
               message: "Success!",
               type: TOAST_TYPE.success,
@@ -62,25 +62,23 @@ export class ToDo extends Component {
 
   loadAllTasks = () => {
     if (this.state.user?.uid) {
-      const categoriesIds = this.state.categories.map(item => item.id.toString());
-      categoriesIds.forEach((category) => {
-        this.toggleIsLoading();
-        getTaskApi(this.state.user.uid)
-          .then(({ data }) => {
-            this.setState({
-              ...this.state,
-              tasks: data ? mapResponseApiData(data) : [],
-            });
-          })
-          .catch(({ message }) => {
-            useToastNotification({ message });
-          })
-          .finally(() => {
-            this.toggleIsLoading();
+      this.toggleIsLoading();
+      getTaskApi(this.state.user.uid)
+        .then(({ data }) => {
+          this.setState({
+            ...this.state,
+            tasks: data ? mapResponseApiData(data) : [],
           });
-      })
+        })
+        .catch(({ message }) => {
+          useToastNotification({ message });
+        })
+        .finally(() => {
+          this.toggleIsLoading();
+        });
     }
   };
+
 
   // __________________CATEGORY
 
@@ -128,10 +126,17 @@ export class ToDo extends Component {
       onSuccess: (modal) => {
         const form = modal.querySelector(".create-category-form");
         const formData = extractFormData(form);
+        const taskContainer = document.querySelector('.todo__tasks')
+        const div = document.createElement('div');
         this.toggleIsLoading();
         createCategoryApi(this.state.user.uid, formData)
           .then(({ data }) => {
-            console.log(data);
+            
+            taskContainer.append(div);
+            div.classList.add(`${this.state.categories.title}`)
+
+            this.loadAllCategories()
+
             useToastNotification({
               message: "Success!",
               type: TOAST_TYPE.success,

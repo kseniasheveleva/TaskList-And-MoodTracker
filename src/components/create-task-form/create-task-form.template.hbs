@@ -12,9 +12,9 @@
   <label>
     <p class="text-sm text-black">Task category</p>
     <select name="category" class="p-2 w-full border rounded">
-      <option value="major">Major</option>
-      <option value="minor">Minor</option>
-      <option value="trivial">Trivial</option>
+      {{#each categories}}
+        <option value="{{this.title}}">{{this.title}}</option>  
+      {{/each}}
     </select>
   </label>
 </form>
