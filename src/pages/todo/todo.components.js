@@ -7,7 +7,7 @@ import { TOAST_TYPE } from "../../constants/toast";
 import { useUserStore } from "../../hooks/useUserStore";
 import { mapResponseApiData } from "../../utils/api";
 import { extractFormData } from "../../utils/extractFormData";
-import { createTaskApi, getTaskApi } from "../../api/tasks";
+import { createTaskApi, deleteTaskApi, getTaskApi, updateTaskApi } from "../../api/tasks";
 import { createCategoryApi, deleteCategoryApi, getCategoryApi } from "../../api/categories";
 import { log } from "handlebars";
 import { set } from "firebase/database";
@@ -41,7 +41,7 @@ export class ToDo extends Component {
       template: 'ui-create-task-form',
       onSuccess: (modal) => {
         const form = modal.querySelector(".create-task-form");
-        const formData = extractFormData(form);
+        const formData = {...extractFormData(form), isCompleted: false};
 
         this.toggleIsLoading();
         createTaskApi(this.state.user.uid, formData)
@@ -86,6 +86,38 @@ export class ToDo extends Component {
       });
     }
   };
+
+  deleteTask = ({ taskId }) => {
+    console.log(taskId);
+    this.toggleIsLoading();
+    deleteTaskApi(this.state.user.uid, taskId)
+    .then(() => {
+      this.loadAllTasks();
+      useToastNotification({
+        message: `Task was deleted`,
+        type: TOAST_TYPE.success,
+      });
+    })
+    .catch(({ message }) => {
+      useToastNotification({ message });
+    })
+    .finally(() => {
+      this.toggleIsLoading();
+    });
+  }
+
+  changeTaskStatus = ({ taskId }) => {
+    const userId = this.state.user.uid
+    getTaskApi(userId).then(({data}) => {
+      const currentTask = mapResponseApiData(data).find(task => task.id == taskId);
+
+      updateTaskApi(userId, taskId, {isCompleted: !currentTask.isCompleted})
+      .then(() => {
+        this.loadAllTasks()
+      })
+    })
+  
+  }
 
 
   // __________________CATEGORY
@@ -146,8 +178,6 @@ export class ToDo extends Component {
       onSuccess: (modal) => {
         const form = modal.querySelector(".create-category-form");
         const formData = extractFormData(form);
-        const taskContainer = document.querySelector('.todo__tasks')
-        const div = document.createElement('div');
         this.toggleIsLoading();
         createCategoryApi(this.state.user.uid, formData)
           .then(({ data }) => {
@@ -173,6 +203,7 @@ export class ToDo extends Component {
     const createCategoryBtn = target.closest('.create-category');
     const deleteCategoryBtn = target.closest('.delete-btn');
     const deleteTaskBtn = target.closest('.delete-task-btn');
+    const checkboxBtn = target.closest('.checkbox');
 
     if (createTaskBtn) {
       return this.openCreateTaskModel()
@@ -191,7 +222,14 @@ export class ToDo extends Component {
 
     if (deleteTaskBtn) {
       return this.deleteTask({
-        id: deleteTaskBtn.dataset.id,
+        userId: this.state.user.uid,
+        taskId: deleteTaskBtn.dataset.id,
+      })
+    }
+
+    if (checkboxBtn) {
+      return this.changeTaskStatus({
+        taskId: checkboxBtn.dataset.id,
       })
     }
   }

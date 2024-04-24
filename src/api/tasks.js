@@ -12,3 +12,7 @@ export const getTaskApi = (userId) => {
 export const deleteTaskApi = (userId, taskId) => {
   return apiService.delete(`${userId}/${API_URLS.tasks}/${taskId}`);
 };
+
+export const updateTaskApi = (userId, taskId, data) => {
+  return apiService.patch(`${userId}/${API_URLS.tasks}/${taskId}`, data);
+}

@@ -3,4 +3,5 @@ export const EVENT_TYPES = {
   store: "store:changed",
   toastNotification: "ui:toast:notification",
   modal: "ui:modal",
+  task: "task:state"
 }

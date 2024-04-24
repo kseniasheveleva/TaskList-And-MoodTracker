@@ -48,6 +48,7 @@
           </div>
             {{#each tasks}}
               <ui-task-card 
+              is-completed="{{isCompleted}}"
               data-id="{{this.id}}"
               title="{{this.title}}"
               description="{{this.description}}"

@@ -1,12 +1,18 @@
-<div class="border border-l-4 w-full p-2 mt-4 rounded min-h-24 flex items-center">
-  <input data-id="{{id}}" type="checkbox" class="h-6 w-6">
-  <div class="ml-3 w-full flex justify-between">
+<div class="border border-slate-400 border-l-4 w-full p-2 mt-4 rounded min-h-24 flex items-center">
+  <input 
+  data-id="{{id}}"
+  type="checkbox"
+  class="checkbox h-6 w-6"
+  {{#if isCompleted}}
+  checked
+  {{/if}}>
+  <div class="ml-3 w-full flex justify-between items-center">
     <div class="w-9/12">
       <h3 class="line-clamp-1 text-lg">{{title}}</h3>
       <p class="line-clamp-3">{{description}}</p>
     </div>
 
-    <button data-id="{{id}}" class="delete-task-btn mr-3"><i class="icon-badge-x"></i></button>
+    <button data-id="{{id}}" class="delete-task-btn text-center w-10 h-10 mr-3 text-2xl"><i data-id="{{id}}" class="delete-task-btn icon-badge-x"></i></button>
   </div>
 
 </div>
