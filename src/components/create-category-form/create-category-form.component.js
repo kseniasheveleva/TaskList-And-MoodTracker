@@ -20,8 +20,6 @@ export class CreateCategoryForm extends Component {
     this.setState({
       colors: toArrOfObjects
     })
-
-    console.log(this.state.colors);
   }
 
   componentDidMount() {

@@ -10,7 +10,7 @@ export class TaskCard extends Component {
       title: this.getAttribute("title"),
       description: this.getAttribute("description"),
       category: this.getAttribute("category"),
-      color: this.getAttribute("color"),
+      id: this.getAttribute("data-id"),
     };
     this.template = template();
   }

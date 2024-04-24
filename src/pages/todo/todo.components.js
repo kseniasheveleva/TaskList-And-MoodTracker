@@ -8,7 +8,9 @@ import { useUserStore } from "../../hooks/useUserStore";
 import { mapResponseApiData } from "../../utils/api";
 import { extractFormData } from "../../utils/extractFormData";
 import { createTaskApi, getTaskApi } from "../../api/tasks";
-import { createCategoryApi, getCategoryApi } from "../../api/categories";
+import { createCategoryApi, deleteCategoryApi, getCategoryApi } from "../../api/categories";
+import { log } from "handlebars";
+import { set } from "firebase/database";
 
 
 export class ToDo extends Component {
@@ -41,8 +43,11 @@ export class ToDo extends Component {
       onSuccess: (modal) => {
         const form = modal.querySelector(".create-task-form");
         const formData = extractFormData(form);
+
+        const categoryId = this.state.categories.find((category) => category.title === formData.category).id
+
         this.toggleIsLoading();
-        createTaskApi(this.state.user.uid, formData)
+        createTaskApi(this.state.user.uid, categoryId, formData)
           .then(({ data }) => {
             this.loadAllTasks()
             useToastNotification({
@@ -62,13 +67,17 @@ export class ToDo extends Component {
 
   loadAllTasks = () => {
     if (this.state.user?.uid) {
-      this.toggleIsLoading();
-      getTaskApi(this.state.user.uid)
+      const idArray = this.state.categories.map((item) => item.id.toString())
+      const arr = []
+      idArray.forEach((id) => {
+        this.toggleIsLoading();
+        getTaskApi(this.state.user.uid, id)
         .then(({ data }) => {
+          arr.push(...mapResponseApiData(data))
           this.setState({
             ...this.state,
-            tasks: data ? mapResponseApiData(data) : [],
-          });
+            tasks: [...arr]
+          })
         })
         .catch(({ message }) => {
           useToastNotification({ message });
@@ -76,25 +85,13 @@ export class ToDo extends Component {
         .finally(() => {
           this.toggleIsLoading();
         });
+      })
     }
   };
 
 
   // __________________CATEGORY
 
-
-  // showActiveTab = (currentCategory) => {
-  //   const categories = Array.from(document.querySelectorAll('.category'));
-  //   const content = Array.from(document.querySelectorAll('.category-content'));
-
-  //   const categoryContentClass = currentCategory.getAttribute('data-type');
-  //   const currentContent = document.querySelector(`.${categoryContentClass}`);
-
-  //   categories.forEach(item => item.classList.remove('active'));
-  //   content.forEach(item => item.classList.add('hidden'))
-  //   currentCategory.classList.add('active');
-  //   currentContent.classList.remove('hidden');
-  // }
 
   loadAllCategories = () => {
     if (this.state.user?.uid) {
@@ -105,9 +102,8 @@ export class ToDo extends Component {
             ...this.state,
             categories: data ? mapResponseApiData(data) : [],
           });
-          
-          const c = this.state.categories.map(item => item.id.toString())
-          console.log("массив из айди", c);
+          console.log('loadAllCategories', this.state.categories);
+          this.loadAllTasks();
         })
         .catch(({ message }) => {
           useToastNotification({ message });
@@ -117,6 +113,32 @@ export class ToDo extends Component {
         });
     }
   };
+
+  deleteCategory = ({id, title}) => {
+    useModal({
+      title: 'Delete category',
+      isOpen: true,
+      confirmation: `Do you really want to delete category "${title}"? All the task of it will be deleted.`,
+      successCaption: "Delete",
+      onSuccess: () => {
+        this.toggleIsLoading();
+        deleteCategoryApi(this.state.user.uid, id)
+          .then(() => {
+            this.loadAllCategories();
+            useToastNotification({
+              message: `Category "${title}" was deleted`,
+              type: TOAST_TYPE.success,
+            });
+          })
+          .catch(({ message }) => {
+            useToastNotification({ message });
+          })
+          .finally(() => {
+            this.toggleIsLoading();
+          });
+      },
+    })
+  }
 
   openCategoryModal = () => {
     useModal({
@@ -131,10 +153,6 @@ export class ToDo extends Component {
         this.toggleIsLoading();
         createCategoryApi(this.state.user.uid, formData)
           .then(({ data }) => {
-            
-            taskContainer.append(div);
-            div.classList.add(`${this.state.categories.title}`)
-
             this.loadAllCategories()
 
             useToastNotification({
@@ -155,7 +173,8 @@ export class ToDo extends Component {
   onClick = ({  target }) => {
     const createTaskBtn = target.closest('.create-task');
     const createCategoryBtn = target.closest('.create-category');
-    const categoryBtn = target.closest('.category');
+    const deleteCategoryBtn = target.closest('.delete-btn');
+    const deleteTaskBtn = target.closest('.delete-task-btn');
 
     if (createTaskBtn) {
       return this.openCreateTaskModel()
@@ -165,9 +184,18 @@ export class ToDo extends Component {
       return this.openCategoryModal()
     }
 
-    // if (categoryBtn) {
-    //   this.showActiveTab(categoryBtn)
-    // }
+    if (deleteCategoryBtn) {
+      return this.deleteCategory({
+        id: deleteCategoryBtn.dataset.id,
+        title: deleteCategoryBtn.dataset.title,
+      })
+    }
+
+    if (deleteTaskBtn) {
+      return this.deleteTask({
+        id: deleteTaskBtn.dataset.id,
+      })
+    }
   }
 
   setUser() {
@@ -181,10 +209,9 @@ export class ToDo extends Component {
   componentDidMount() {
     this.setUser();
     this.loadAllCategories();
-    this.loadAllTasks();
     this.addEventListener('click', this.onClick);
   }
-
+  
   componentWillUnmount() {
     this.removeEventListener('click', this.onClick);
   }
