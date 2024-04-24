@@ -15,8 +15,8 @@
   <div class="flex items-center justify-center">
     <div class="todo flex gap-4 mt-8 grid grid-cols-2 grid-cols-layout ">
       <div class="todo__col bg-slate-50 border border-lime-950 min-w-[300px] p-4 flex flex-col gap-4 rounded-lg h-[854px]">
-        <div class="todo__col-name border-b-2 border-lime-950 p-4 flex items-center gap-4">
-          <h3 class="text-2xl">Categories</h1>
+        <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
+          <h3>Categories</h1>
           <i class="icon-badge-plus create-category"></i>
         </div>
         <div class="todo__categories space-y-4">
@@ -29,15 +29,15 @@
               <i 
               data-title="{{this.title}}"
               data-id="{{this.id}}"
-              class="delete-btn icon-badge-x absolute right-2 top-1"></i>
+              class="delete-btn icon-badge-x text-xl absolute right-2 top-1"></i>
             </div>
           {{/each}}
         </div>
       </div>
 
       <div class="todo__col bg-slate-50 min-w-[300px] md:min-w-[1000px] border border-lime-950 p-4 w-full rounded-lg h-[854px] overflow-y-scroll ">
-        <div class="todo__col-name border-b-2 border-lime-950 p-4 flex items-center gap-4">
-          <h3 class="text-2xl">ToDo</h1>
+        <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
+          <h3>ToDo</h1>
           <i class="icon-badge-plus create-task"></i>
         </div>
         <div class="todo__tasks ">

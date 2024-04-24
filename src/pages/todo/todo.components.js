@@ -22,7 +22,6 @@ export class ToDo extends Component {
       user: null,
       isLoading: false,
       categories: [],
-      tasks: [],
     }
   }
 
@@ -44,10 +43,8 @@ export class ToDo extends Component {
         const form = modal.querySelector(".create-task-form");
         const formData = extractFormData(form);
 
-        const categoryId = this.state.categories.find((category) => category.title === formData.category).id
-
         this.toggleIsLoading();
-        createTaskApi(this.state.user.uid, categoryId, formData)
+        createTaskApi(this.state.user.uid, formData)
           .then(({ data }) => {
             this.loadAllTasks()
             useToastNotification({
@@ -67,25 +64,26 @@ export class ToDo extends Component {
 
   loadAllTasks = () => {
     if (this.state.user?.uid) {
-      const idArray = this.state.categories.map((item) => item.id.toString())
-      const arr = []
-      idArray.forEach((id) => {
-        this.toggleIsLoading();
-        getTaskApi(this.state.user.uid, id)
-        .then(({ data }) => {
-          arr.push(...mapResponseApiData(data))
-          this.setState({
-            ...this.state,
-            tasks: [...arr]
+      this.toggleIsLoading();
+      getTaskApi(this.state.user.uid)
+      .then(({ data }) => {
+        this.setState({
+          ...this.state,
+          categories: this.state.categories.map((category) => {
+            return { 
+              ...category,
+              tasks: mapResponseApiData(data).filter((task) => task.category == category.title)
+            }
           })
         })
-        .catch(({ message }) => {
-          useToastNotification({ message });
-        })
-        .finally(() => {
-          this.toggleIsLoading();
-        });
+        console.log(this.state.categories);
       })
+      .catch(({ message }) => {
+        useToastNotification({ message });
+      })
+      .finally(() => {
+        this.toggleIsLoading();
+      });
     }
   };
 
@@ -100,7 +98,7 @@ export class ToDo extends Component {
         .then(({ data }) => {
           this.setState({
             ...this.state,
-            categories: data ? mapResponseApiData(data) : [],
+            categories: data ? mapResponseApiData(data).map((item) => item = {...item, tasks: []}) : [],
           });
           console.log('loadAllCategories', this.state.categories);
           this.loadAllTasks();
