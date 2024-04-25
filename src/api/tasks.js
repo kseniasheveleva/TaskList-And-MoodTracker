@@ -9,6 +9,10 @@ export const getTaskApi = (userId) => {
   return apiService.get(`${userId}/${API_URLS.tasks}`);
 };
 
+export const getTaskByIdApi = (userId, taskId) => {
+  return apiService.get(`${userId}/${API_URLS.tasks}/${taskId}`);
+};
+
 export const deleteTaskApi = (userId, taskId) => {
   return apiService.delete(`${userId}/${API_URLS.tasks}/${taskId}`);
 };

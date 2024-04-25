@@ -6,10 +6,10 @@
 
   <label>
     <p class="text-sm text-black">Select Color</p>
-    <select name="category-color" class="p-2 w-full border rounded">
+    <select name="categoryColor" class="p-2 w-full border rounded">
       {{#each colors}}
       <option>
-        <div class="{{this.color}} w-4 h-4">{{this.color}}</div>
+        <div>{{this.name}} <p class="hidden text-white">{{this.color}}</p></div>
       </option>
       {{/each}}
     </select>

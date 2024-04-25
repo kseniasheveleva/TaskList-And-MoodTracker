@@ -1,9 +1,9 @@
 export const CATEGORIES_COLORS = {
-  violet: 'bg-violet-300',
-  blue: 'bg-blue-300',
-  fuchsia: 'bg-fuchsia-300',
-  rose: 'bg-rose-300',
-  emerald: 'bg-emerald-300',
+  violet: 'bg-violet-200',
+  blue: 'bg-blue-200',
+  fuchsia: 'bg-fuchsia-200',
+  rose: 'bg-rose-200',
+  emerald: 'bg-emerald-200',
   zinc: 'bg-zinc-300',
-  lime: 'bg-lime-300',
+  lime: 'bg-lime-200',
 }

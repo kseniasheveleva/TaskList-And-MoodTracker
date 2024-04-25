@@ -13,16 +13,16 @@
   </div>
 
   <div class="flex items-center justify-center">
-    <div class="todo flex gap-4 mt-8 grid grid-cols-2 grid-cols-layout ">
+    <div class="todo flex gap-4 mt-8 grid grid-cols-2 grid-cols-layout w-full md:px-4 lg:px-32 xl:px-60">
       <div class="todo__col bg-slate-50 border border-lime-950 min-w-[300px] p-4 flex flex-col gap-4 rounded-lg h-[854px]">
         <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
           <h3>Categories</h1>
-          <i class="icon-badge-plus create-category"></i>
+          <i class="icon-badge-plus create-category cursor-pointer"></i>
         </div>
         <div class="todo__categories space-y-4">
           {{#each categories}}
             <div
-              class="{{this.category-color}} relative cursor-pointer rounded-md
+              class="{{this.categoryColor}} relative cursor-pointer rounded-md
               category flex items-center justify-center text-lg h-16 w-full border border-lime-950">
               <h2 class="text-2xl">{{this.title}}</h2>
 
@@ -35,16 +35,16 @@
         </div>
       </div>
 
-      <div class="todo__col bg-slate-50 min-w-[300px] md:min-w-[1000px] border border-lime-950 p-4 w-full rounded-lg h-[854px] overflow-y-scroll ">
+      <div class="todo__col bg-slate-50 border border-lime-950 p-4 w-full rounded-lg h-[854px] overflow-y-scroll ">
         <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
           <h3>ToDo</h1>
-          <i class="icon-badge-plus create-task"></i>
+          <i class="icon-badge-plus create-task cursor-pointer"></i>
         </div>
         <div class="todo__tasks ">
           {{#each categories}}
           <div class="mt-3 pl-3">
             <h1 class="text-2xl mb-2">{{this.title}}</h1>
-            <div class="w-full h-1 rounded-lg {{this.category-color}}"></div>
+            <div class="w-full h-1 rounded-lg {{this.categoryColor}}"></div>
           </div>
             {{#each tasks}}
               <ui-task-card 
