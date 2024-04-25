@@ -1,19 +1,19 @@
-  {{!-- <ui-loader loading="{{isLoading}}"></ui-loader> --}}
+<ui-loader loading="{{isLoading}}" ></ui-loader>
 <div class="min-h-screen grid grid-rows-layout bg-slate-800">
   <div class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
-    <button class="border border-lime-950 p-2 rounded-lg">
-      <i class="icon-arrow-big-left text-indigo-500 w-5 h-5"></i>
-      <router-link href="${props.routes.userHome}" label="Back to Lobby" class="text-lime-950 text-xl"></router-link>
+    <button class="border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
+      <i class="icon-arrow-big-left text-lime-950  w-5 h-5"></i>
+      <router-link href="${props.routes.userHome}" label="Back to Lobby" class="text-lime-950"></router-link>
     </button>
 
     <nav class="flex items-center gap-8">
-      <router-link href="${props.routes.userHome}" label="Mood Tracker" class="text-lime-950 text-xl"></router-link>
+      <router-link href="${props.routes.moodTracker}" label="Mood Tracker" class="text-lime-950 text-xl"></router-link>
       <router-link href="${props.routes.userHome}" label="Diary" class="text-lime-950 text-xl"></router-link>
     </nav>
   </div>
 
   <div class="flex items-center justify-center">
-    <div class="todo flex gap-4 mt-8 grid grid-cols-2 grid-cols-layout w-full md:px-4 lg:px-32 xl:px-60">
+    <div class="todo gap-4 mt-8 grid grid-cols-2 grid-cols-layout w-full md:px-4 lg:px-32 xl:px-60">
       <div class="todo__col bg-slate-50 border border-lime-950 min-w-[300px] p-4 flex flex-col gap-4 rounded-lg h-[854px]">
         <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
           <h3>Categories</h1>
@@ -22,14 +22,14 @@
         <div class="todo__categories space-y-4">
           {{#each categories}}
             <div
-              class="{{this.categoryColor}} relative cursor-pointer rounded-md
+              class="{{this.categoryColor}} relative cursor-pointer rounded-md group
               category flex items-center justify-center text-lg h-16 w-full border border-lime-950">
               <h2 class="text-2xl">{{this.title}}</h2>
 
               <i 
               data-title="{{this.title}}"
               data-id="{{this.id}}"
-              class="delete-btn icon-badge-x text-xl absolute right-2 top-1"></i>
+              class="delete-btn icon-badge-x text-xl absolute right-2 top-1 hidden group-hover:block"></i>
             </div>
           {{/each}}
         </div>

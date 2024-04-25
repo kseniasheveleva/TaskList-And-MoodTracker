@@ -11,6 +11,7 @@ import { createTaskApi, deleteTaskApi, getTaskApi, getTaskByIdApi, updateTaskApi
 import { createCategoryApi, deleteCategoryApi, getCategoryApi } from "../../api/categories";
 import { log } from "handlebars";
 import { set } from "firebase/database";
+import { CATEGORIES_COLORS } from "../../constants/colors";
 
 
 export class ToDo extends Component {
@@ -32,7 +33,9 @@ export class ToDo extends Component {
     });
   };
 
-  // __________________TASK
+  // __________________TASK______________________
+
+
 
   openCreateTaskModel = () => {
     if (this.state.categories.length !== 0) {
@@ -96,7 +99,6 @@ export class ToDo extends Component {
             })
           })
         }
-        console.log(this.state.categories);
       })
       .catch(({ message }) => {
         useToastNotification({ message });
@@ -127,9 +129,9 @@ export class ToDo extends Component {
 
   changeTaskStatus = ({ taskId }) => {
     const uid = this.state.user.uid;
+    this.toggleIsLoading();
     getTaskByIdApi(uid, taskId)
     .then(({ data }) => {
-      console.log(data);
       updateTaskApi(uid, taskId, {isCompleted: !data.isCompleted})
       .then(() => this.loadAllTasks())
     })
@@ -143,7 +145,13 @@ export class ToDo extends Component {
   }
 
 
-  // __________________CATEGORY
+
+
+
+  // __________________CATEGORY______________________
+
+
+
 
 
   loadAllCategories = () => {
@@ -183,11 +191,13 @@ export class ToDo extends Component {
             message: `Category "${title}" was deleted`,
             type: TOAST_TYPE.success,
           });
-
+        })
+        .then(() => {
           getTaskApi(uid).then(({ data }) => {
             const mapped = mapResponseApiData(data)
-            const ids = mapped.filter((task) => task.category === title).map((task) => task.id)
-            ids.forEach((id) => {
+            const idsArray = mapped.filter((task) => task.category === title).map((task) => task.id)
+            
+            idsArray.forEach((id) => {
               deleteTaskApi(uid, id)
             })
           })
@@ -209,9 +219,17 @@ export class ToDo extends Component {
       template: 'ui-create-category-form',
       onSuccess: (modal) => {
         const form = modal.querySelector(".create-category-form");
-        const formData = extractFormData(form);
+        const formData =  extractFormData(form);
+        const colorFromFormData = formData.categoryColor;
+        const colorsClass = Object.entries(CATEGORIES_COLORS).find((item) => item.includes(colorFromFormData))[1]
+
+        const uploadedFormData = {
+          ...formData,
+          categoryColor: colorsClass
+        }
+        
         this.toggleIsLoading();
-        createCategoryApi(this.state.user.uid, formData)
+        createCategoryApi(this.state.user.uid, uploadedFormData)
           .then(() => {
             this.loadAllCategories()
 
