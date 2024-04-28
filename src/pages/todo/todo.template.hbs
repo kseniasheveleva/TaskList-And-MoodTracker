@@ -1,7 +1,7 @@
 <ui-loader loading="{{isLoading}}" ></ui-loader>
 <div class="min-h-screen grid grid-rows-layout bg-slate-800">
   <div class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
-    <button class="border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
+    <button class="super-btn border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
       <i class="icon-arrow-big-left text-lime-950  w-5 h-5"></i>
       <router-link href="${props.routes.userHome}" label="Back to Lobby" class="text-lime-950"></router-link>
     </button>
@@ -14,7 +14,7 @@
 
   <div class="flex items-center justify-center">
     <div class="todo gap-4 mt-8 grid grid-cols-2 grid-cols-layout w-full md:px-4 lg:px-32 xl:px-60">
-      <div class="todo__col bg-slate-50 border border-lime-950 min-w-[300px] p-4 flex flex-col gap-4 rounded-lg h-[854px]">
+      <div class="todo__col bg-slate-50 border border-lime-950 md:w-[300px] p-4 flex flex-col gap-4 rounded-lg h-[854px] overflow-y-auto">
         <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
           <h3>Categories</h1>
           <i class="icon-badge-plus create-category cursor-pointer"></i>
@@ -24,7 +24,7 @@
             <div
               class="{{this.categoryColor}} relative cursor-pointer rounded-md group
               category flex items-center justify-center text-lg h-16 w-full border border-lime-950">
-              <h2 class="text-2xl">{{this.title}}</h2>
+              <h3 data-link="{{this.titleId}}" class="category-link text-xl font-normal">{{this.title}}</a>
 
               <i 
               data-title="{{this.title}}"
@@ -35,19 +35,20 @@
         </div>
       </div>
 
-      <div class="todo__col bg-slate-50 border border-lime-950 p-4 w-full rounded-lg h-[854px] overflow-y-scroll ">
+      <div class="todo__col bg-slate-50 border border-lime-950 p-4 w-full rounded-lg h-[854px] overflow-y-scroll scroll-smooth">
         <div class="todo__col-name text-2xl border-b-2 border-lime-950 p-4 flex items-center gap-4">
           <h3>ToDo</h1>
           <i class="icon-badge-plus create-task cursor-pointer"></i>
         </div>
         <div class="todo__tasks ">
           {{#each categories}}
-          <div class="mt-3 pl-3">
-            <h1 class="text-2xl mb-2">{{this.title}}</h1>
+          <div class="mt-6 pl-3">
+            <h1 id="{{this.titleId}}" class="text-2xl mb-2">{{this.title}}</h1>
             <div class="w-full h-1 rounded-lg {{this.categoryColor}}"></div>
           </div>
             {{#each tasks}}
               <ui-task-card 
+              created-at="{{createdAt}}"
               is-completed="{{isCompleted}}"
               data-id="{{this.id}}"
               title="{{this.title}}"

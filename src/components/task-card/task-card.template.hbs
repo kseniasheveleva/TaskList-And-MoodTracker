@@ -1,17 +1,23 @@
-<div class="border border-slate-400 border-l-4 w-full p-2 mt-4 rounded min-h-24 flex items-center">
-  <input 
-  type="checkbox"
-  class="checkbox h-6 w-6"
-  {{#if isCompleted}}
-  checked
-  {{/if}}>
-  <div class="ml-3 w-full flex justify-between items-center">
-    <div class="w-9/12">
-      <h3 class="line-clamp-1 text-lg">{{title}}</h3>
-      <p class="line-clamp-3">{{description}}</p>
-    </div>
-
-    <button class="delete-task-btn text-center w-10 h-10 mr-3 text-2xl"><i class="delete-task-btn icon-badge-x"></i></button>
+<div class="card-container w-full rounded-lg border border-slate-600 border-l-4 p-2 mt-4 min-h-24">
+  <div class="creation">
+    <p class="text-sm text-slate-600">{{createdAt}}</p>
   </div>
 
+  <div class="flex items-center justify-between mt-2">
+    <div class="flex gap-3">
+      <input 
+      type="checkbox"
+      class="checkbox h-6 w-6"
+      {{#if isCompleted}}
+      checked
+      {{/if}}>
+      <h3 class="line-clamp-1 text-lg font-medium">{{title}}</h3>
+    </div>
+    <button class="delete-task-btn text-center text-slate-600 w-10 h-10 text-2xl"><i
+        class="delete-task-btn icon-badge-x"></i></button>
+  </div>
+
+  <div class="descr ml-9 w-9/12">
+    <p class="line-clamp-3">{{description}}</p>
+  </div>
 </div>

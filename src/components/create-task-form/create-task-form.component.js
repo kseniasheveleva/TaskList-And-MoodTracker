@@ -7,12 +7,14 @@ import template from "./create-task-form.template.hbs";
 export class CreateTaskForm extends Component {
   constructor() {
     super();
+    
     this.state = {
       user: null,
       categories: []
     };
     this.template = template();
   }
+
 
   getCategories() {
     getCategoryApi(this.state.user.uid)
@@ -23,6 +25,7 @@ export class CreateTaskForm extends Component {
       });
   })
   }
+
 
   setUser() {
     const { getUser } = useUserStore();
@@ -36,7 +39,6 @@ export class CreateTaskForm extends Component {
     this.setUser()
     this.getCategories()
   }
-
 }
 
 customElements.define("ui-create-task-form", CreateTaskForm);

@@ -9,9 +9,10 @@ import { mapResponseApiData } from "../../utils/api";
 import { extractFormData } from "../../utils/extractFormData";
 import { createTaskApi, deleteTaskApi, getTaskApi, getTaskByIdApi, updateTaskApi } from "../../api/tasks";
 import { createCategoryApi, deleteCategoryApi, getCategoryApi } from "../../api/categories";
-import { log } from "handlebars";
-import { set } from "firebase/database";
 import { CATEGORIES_COLORS } from "../../constants/colors";
+import dayjs from 'dayjs'
+import { EVENT_TYPES } from "../../constants/eventTypes";
+import { document } from "postcss";
 
 
 export class ToDo extends Component {
@@ -45,23 +46,31 @@ export class ToDo extends Component {
         template: 'ui-create-task-form',
         onSuccess: (modal) => {
           const form = modal.querySelector(".create-task-form");
-          const formData = {...extractFormData(form), isCompleted: false};
-  
-          this.toggleIsLoading();
-          createTaskApi(this.state.user.uid, formData)
-            .then(({ data }) => {
-              this.loadAllTasks()
-              useToastNotification({
-                message: "Success!",
-                type: TOAST_TYPE.success,
+          const formData = {
+            ...extractFormData(form),
+            isCompleted: false,
+            createdAt: dayjs().format('DD/MM/YY')
+            };
+          if (formData.title !== '') {
+            this.toggleIsLoading();
+            createTaskApi(this.state.user.uid, formData)
+              .then(({ data }) => {
+                this.loadAllTasks()
+                useToastNotification({
+                  message: "Success!",
+                  type: TOAST_TYPE.success,
+                });
+              })
+              .catch(({ message }) => {
+                useToastNotification({ message });
+              })
+              .finally(() => {
+                this.toggleIsLoading();
               });
-            })
-            .catch(({ message }) => {
-              useToastNotification({ message });
-            })
-            .finally(() => {
-              this.toggleIsLoading();
-            });
+          } else {
+            useToastNotification({ message: 'Give task a name' })
+          }
+  
         },
       })
     } else {
@@ -115,7 +124,7 @@ export class ToDo extends Component {
     .then(() => {
       this.loadAllTasks();
       useToastNotification({
-        message: `Task was deleted`,
+        message: `Task is deleted`,
         type: TOAST_TYPE.success,
       });
     })
@@ -159,9 +168,14 @@ export class ToDo extends Component {
       this.toggleIsLoading();
       getCategoryApi(this.state.user.uid)
         .then(({ data }) => {
+          const mappedData = mapResponseApiData(data);
           this.setState({
             ...this.state,
-            categories: data ? mapResponseApiData(data).map((item) => item = {...item, tasks: []}) : [],
+            categories: data ? mappedData.map((item) => item = {
+              ...item,
+              tasks: [],
+              titleId: item.title.toLowerCase().replaceAll(' ', '-')
+            }) : [],
           });
           console.log('loadAllCategories', this.state.categories);
           this.loadAllTasks();
@@ -227,23 +241,33 @@ export class ToDo extends Component {
           ...formData,
           categoryColor: colorsClass
         }
-        
-        this.toggleIsLoading();
-        createCategoryApi(this.state.user.uid, uploadedFormData)
-          .then(() => {
-            this.loadAllCategories()
 
-            useToastNotification({
-              message: "Success!",
-              type: TOAST_TYPE.success,
+        const searchNum = Array.from(uploadedFormData.title)
+        .filter(symbol => symbol !== ' ')
+        .find(symbol => isNaN(+symbol) == false)
+
+        console.log(formData.title, isNaN(+searchNum), searchNum)
+        
+        if ((uploadedFormData.title !== '') && (isNaN(+searchNum) === true) && (uploadedFormData.title !== ' ')) {
+          this.toggleIsLoading();
+          createCategoryApi(this.state.user.uid, uploadedFormData)
+            .then(() => {
+              this.loadAllCategories()
+  
+              useToastNotification({
+                message: "Success!",
+                type: TOAST_TYPE.success,
+              });
+            })
+            .catch(({ message }) => {
+              useToastNotification({ message });
+            })
+            .finally(() => {
+              this.toggleIsLoading();
             });
-          })
-          .catch(({ message }) => {
-            useToastNotification({ message });
-          })
-          .finally(() => {
-            this.toggleIsLoading();
-          });
+        } else {
+          useToastNotification({ message: 'Please give category a name. (It cannot contain numbers)', type: TOAST_TYPE.error})
+        }
       },
     })
   }
@@ -254,6 +278,7 @@ export class ToDo extends Component {
     const deleteCategoryBtn = target.closest('.delete-btn');
     const deleteTaskBtn = target.closest('.delete-task-btn');
     const checkboxBtn = target.closest('.checkbox');
+    const categoryLink = target.closest('.category-link');
 
     const taskCard = target.closest('ui-task-card')
 
@@ -283,6 +308,13 @@ export class ToDo extends Component {
       return this.changeTaskStatus({
         taskId: taskCard.dataset.id,
       })
+    }
+
+    if (categoryLink) {
+      const id = categoryLink.dataset.link
+      const el = this.querySelector(`#${id}`)
+      console.log(el);
+      el.scrollIntoView({behavior: 'smooth', block: 'start'})
     }
   }
 
