@@ -1,0 +1,25 @@
+  <ui-loader loading="{{isLoading}}"></ui-loader>
+<div class="min-h-screen w-full bg-slate-800 grid grid-rows-layout">
+  <header class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
+    <button class="super-btn border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
+      <i class="icon-arrow-big-left text-lime-950  w-5 h-5"></i>
+      <router-link href="${props.routes.userHome}" label="Back to Main Page" class="text-lime-950"></router-link>
+    </button>
+  
+    <nav class="flex items-center gap-8">
+      <router-link href="${props.routes.todo}" label="ToDo" class="text-lime-950 text-xl"></router-link>
+      <router-link href="${props.routes.userHome}" label="Diary" class="text-lime-950 text-xl"></router-link>
+    </nav>
+  </header>
+
+  <div class="container min-h-52 grid grid-rows-layout mx-auto my-12 bg-slate-100 rounded-lg p-12">
+    <div class="header flex items-center justify-center"><p class="text-xl py-5">How are you feeling today?</p></div>
+    <div class="body h-full flex items-center justify-center">
+      <t-one></t-one>
+    </div>
+    <div class="footer flex gap-4 pt-5 border-t-2 border-lime-950">
+      <button class="next-btn text-lime-950 bg-transparent border border-lime-950 hover:bg-slate-800 hover:text-white font-medium rounded-lg text-lg px-5 py-2.5 text-center"><p>Next</p></button>
+      <button class="go-back-btn py-2.5 px-5 ms-3 text-lg font-medium text-lime-950 bg-white rounded-lg border border-gray-200 hover:text-slate-500"><p>Go Back</p></button>
+    </div>
+  </div>
+</div>

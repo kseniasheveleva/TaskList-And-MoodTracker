@@ -1,16 +1,16 @@
 <ui-loader loading="{{isLoading}}" ></ui-loader>
 <div class="min-h-screen grid grid-rows-layout bg-slate-800">
-  <div class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
+  <header class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
     <button class="super-btn border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
       <i class="icon-arrow-big-left text-lime-950  w-5 h-5"></i>
-      <router-link href="${props.routes.userHome}" label="Back to Lobby" class="text-lime-950"></router-link>
+      <router-link href="${props.routes.userHome}" label="Back to Main Page" class="text-lime-950"></router-link>
     </button>
 
     <nav class="flex items-center gap-8">
       <router-link href="${props.routes.moodTracker}" label="Mood Tracker" class="text-lime-950 text-xl"></router-link>
       <router-link href="${props.routes.userHome}" label="Diary" class="text-lime-950 text-xl"></router-link>
     </nav>
-  </div>
+  </header>
 
   <div class="flex items-center justify-center">
     <div class="todo gap-4 mt-8 grid grid-cols-2 grid-cols-layout w-full md:px-4 lg:px-32 xl:px-60">
