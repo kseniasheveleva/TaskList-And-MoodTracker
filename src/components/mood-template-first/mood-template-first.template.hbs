@@ -1,0 +1,12 @@
+<div class="template template-first flex flex-col gap-8 items-center">
+  <p class="text-xl">Choose what resonates with you.</p>
+  <div class="flex gap-16 bg-zinc-300 rounded-xl p-3">
+    {{#each moods}}
+    <div class="next-btn">
+      <button data-type="{{this.type}}" class="emoji-btn w-16 h-16 lg:w-24 lg:h-24 ">
+        <img src="{{this.img}}" alt="{{this.type}}">
+      </button>
+    </div>
+    {{/each}}
+  </div>
+</div>

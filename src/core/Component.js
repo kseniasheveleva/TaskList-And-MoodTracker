@@ -13,6 +13,10 @@ export class Component extends HTMLElement {
     this.compile();
   }
 
+  setStateN(state) {
+    this.state = state;
+  }
+
   compile() {
     const template = Handlebars.compile(this.template);
     this.innerHTML = "";

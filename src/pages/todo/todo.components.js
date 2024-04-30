@@ -232,6 +232,7 @@ export class ToDo extends Component {
       title: 'Create Category',
       template: 'ui-create-category-form',
       onSuccess: (modal) => {
+        console.log(modal);
         const form = modal.querySelector(".create-category-form");
         const formData =  extractFormData(form);
         const colorFromFormData = formData.categoryColor;
