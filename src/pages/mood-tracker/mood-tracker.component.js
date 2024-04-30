@@ -1,15 +1,8 @@
-import { Satellite } from "lucide-static";
-import { createMoodTrackerApi } from "../../api/mood";
-import { EVENT_TYPES } from "../../constants/eventTypes";
-import { MOOD_IMG, MOOD_TYPE } from "../../constants/mood-emotes";
 import { ROUTES } from "../../constants/routes";
 import { Component } from "../../core/Component";
-import { eventEmitter } from "../../core/EventEmitter";
 import { useUserStore } from "../../hooks/useUserStore";
 import { extractFormData } from "../../utils/extractFormData";
 import template from "./mood-tracker.template.hbs";
-import { log } from "handlebars";
-import { set } from "firebase/database";
 
 
 export class MoodTracker extends Component {
@@ -49,15 +42,10 @@ export class MoodTracker extends Component {
 
     onClick = (evt) => {
         evt.preventDefault()
-        const nextBtn = evt.target.closest('.next-btn');
         const backBtn = evt.target.closest('.go-back-btn');
-        const templates = this.querySelectorAll('.template');
         const emojiBtn = evt.target.closest('.emoji-btn');
         const submitFirstForm = evt.target.closest('.submit-first-form');
         const submitSecondForm = evt.target.closest('.submit-second-form');
-
-        
-
 
         if (emojiBtn) {
             const chosenEmoji = emojiBtn.dataset.type;
@@ -82,12 +70,14 @@ export class MoodTracker extends Component {
             this.setStateN({
                 ...this.state, data: {...this.state.data, ...formData}
             })
+            console.log('MOVE FORWARD', this.state.data);
         }
 
         if (backBtn) {
             return this.goBack()
         }
     }
+    
     
     goBack = () => {
         if (this.state.currentTemplate !== 'ui-choose-emoji-template') {
@@ -103,7 +93,7 @@ export class MoodTracker extends Component {
             const indexOfCurrentTmp = this.state.templates.indexOf(this.state.currentTemplate)
             const nextTmp = this.state.templates[indexOfCurrentTmp+1];
             this.appendTemplate(nextTmp)
-            console.log('MOVE', this.state.data);
+            console.log('MOVE FORWARD', this.state.data);
         }
     }
 

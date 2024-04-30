@@ -13,6 +13,7 @@ import { CATEGORIES_COLORS } from "../../constants/colors";
 import dayjs from 'dayjs'
 import { EVENT_TYPES } from "../../constants/eventTypes";
 import { document } from "postcss";
+import { Satellite } from "lucide-static";
 
 
 export class ToDo extends Component {
@@ -165,20 +166,25 @@ export class ToDo extends Component {
 
   loadAllCategories = () => {
     if (this.state.user?.uid) {
+      console.log('papappapapa');
       this.toggleIsLoading();
       getCategoryApi(this.state.user.uid)
         .then(({ data }) => {
-          const mappedData = mapResponseApiData(data);
-          this.setState({
-            ...this.state,
-            categories: data ? mappedData.map((item) => item = {
-              ...item,
-              tasks: [],
-              titleId: item.title.toLowerCase().replaceAll(' ', '-')
-            }) : [],
-          });
-          console.log('loadAllCategories', this.state.categories);
-          this.loadAllTasks();
+          if (data) {
+            const mappedData = mapResponseApiData(data);
+            this.setState({
+              ...this.state,
+              categories: data ? mappedData.map((item) => item = {
+                ...item,
+                tasks: [],
+                titleId: item.title.toLowerCase().replaceAll(' ', '-')
+              }) : [],
+            });
+            console.log('loadAllCategories', this.state.categories);
+            this.loadAllTasks();
+          } else {
+            this.setState({...this.state, categories: []})
+          }
         })
         .catch(({ message }) => {
           useToastNotification({ message });
@@ -207,14 +213,17 @@ export class ToDo extends Component {
           });
         })
         .then(() => {
-          getTaskApi(uid).then(({ data }) => {
-            const mapped = mapResponseApiData(data)
-            const idsArray = mapped.filter((task) => task.category === title).map((task) => task.id)
-            
-            idsArray.forEach((id) => {
-              deleteTaskApi(uid, id)
+          const currentCategory = this.state.categories.find(item => item.id === id)
+          if (currentCategory.tasks.length !== 0) {
+            getTaskApi(uid).then(({ data }) => {
+              const mapped = mapResponseApiData(data)
+              const idsArray = mapped.filter((task) => task.category === title).map((task) => task.id)
+              
+              idsArray.forEach((id) => {
+                deleteTaskApi(uid, id)
+              })
             })
-          })
+          }
         })
         .catch(({ message }) => {
           useToastNotification({ message });
@@ -232,7 +241,6 @@ export class ToDo extends Component {
       title: 'Create Category',
       template: 'ui-create-category-form',
       onSuccess: (modal) => {
-        console.log(modal);
         const form = modal.querySelector(".create-category-form");
         const formData =  extractFormData(form);
         const colorFromFormData = formData.categoryColor;
@@ -247,7 +255,6 @@ export class ToDo extends Component {
         .filter(symbol => symbol !== ' ')
         .find(symbol => isNaN(+symbol) == false)
 
-        console.log(formData.title, isNaN(+searchNum), searchNum)
         
         if ((uploadedFormData.title !== '') && (isNaN(+searchNum) === true) && (uploadedFormData.title !== ' ')) {
           this.toggleIsLoading();
