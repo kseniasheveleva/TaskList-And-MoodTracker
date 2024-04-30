@@ -10,4 +10,4 @@ export class EmotionDescriptionTemplate extends Component {
   }
 }
 
-customElements.define("emotion-description-template", EmotionDescriptionTemplate)
+customElements.define("ui-emotion-description-template", EmotionDescriptionTemplate)

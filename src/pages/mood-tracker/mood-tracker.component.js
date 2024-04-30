@@ -20,7 +20,9 @@ export class MoodTracker extends Component {
         this.state = {
             user: null,
             data: {},
-            isLoading: false
+            isLoading: false,
+            templates: ['ui-choose-emoji-template', 'ui-emotion-description-template', 'ui-memo-description-template'],
+            currentTemplate: 'ui-choose-emoji-template'
         }
     }
 
@@ -34,18 +36,16 @@ export class MoodTracker extends Component {
     // _______________________________________________
 
     appendTemplate(template) {
-        const tmp = createElement(template);
-        this.querySelector('.body').append(tmp)
+        const body = this.querySelector('.body')
+        const previousTmp = this.querySelector('.tmp')
+
+        body.removeChild(previousTmp)
+        const tmp = document.createElement(template)
+        tmp.classList.add('tmp')
+        body.append(tmp)
+        this.setStateN({...this.state, currentTemplate: template})  
     }
 
-    settingState = ({ detail }) => {
-        this.setState({
-            ...this.state,
-            ...detail
-        })
-
-        this.appendTemplate(detail.template)
-    }
 
     onClick = (evt) => {
         evt.preventDefault()
@@ -56,8 +56,7 @@ export class MoodTracker extends Component {
         const submitFirstForm = evt.target.closest('.submit-first-form');
         const submitSecondForm = evt.target.closest('.submit-second-form');
 
-        const arrOfTemplates = [...templates];
-        const currentTmp = arrOfTemplates.find(tmp => !tmp.classList.contains('hidden'));
+        
 
 
         if (emojiBtn) {
@@ -65,40 +64,46 @@ export class MoodTracker extends Component {
             this.setStateN({
                 ...this.state, data: {...this.state.data, chosenEmoji}
             })
-            this.moveForward(currentTmp, arrOfTemplates)
-            console.log(this.state.data);
+            this.moveForward()
         }
 
         if (submitFirstForm) {
             const form = this.querySelector('.form-first');
             const formData = extractFormData(form);
-            console.log(chosenEmoji);
+            this.setStateN({
+                ...this.state, data: {...this.state.data, ...formData}
+            })
+            this.moveForward()
         }
-
+        
         if (submitSecondForm) {
             const form = this.querySelector('.form-second');
             const formData = extractFormData(form);
+            this.setStateN({
+                ...this.state, data: {...this.state.data, ...formData}
+            })
         }
 
         if (backBtn) {
-            return this.goBack(currentTmp, arrOfTemplates)
+            return this.goBack()
         }
     }
     
-    goBack = (currentTmp, arrOfTemplates) => {
-        if (!currentTmp.classList.contains('template-first')) {
-            const previousTmp = arrOfTemplates[arrOfTemplates.indexOf(currentTmp)-1]
-            currentTmp.classList.add('hidden')
-            previousTmp.classList.remove('hidden')
+    goBack = () => {
+        if (this.state.currentTemplate !== 'ui-choose-emoji-template') {
+            const indexOfCurrentTmp = this.state.templates.indexOf(this.state.currentTemplate)
+            const previousTmp = this.state.templates[indexOfCurrentTmp-1];
+            this.appendTemplate(previousTmp)
+            console.log('GOBACK', this.state.currentTemplate);
         }
     }
 
-    moveForward = (currentTmp, arrOfTemplates) => {
-        if (!currentTmp.classList.contains('template-third')) {
-            const nextTmp = arrOfTemplates[arrOfTemplates.indexOf(currentTmp)+1]
-            currentTmp.classList.add('hidden')
-            nextTmp.classList.remove('hidden')
-            console.log(currentTmp, nextTmp);
+    moveForward = () => {
+        if (this.state.currentTemplate !== 'ui-memo-description-template') {
+            const indexOfCurrentTmp = this.state.templates.indexOf(this.state.currentTemplate)
+            const nextTmp = this.state.templates[indexOfCurrentTmp+1];
+            this.appendTemplate(nextTmp)
+            console.log('MOVE', this.state.data);
         }
     }
 
@@ -112,15 +117,11 @@ export class MoodTracker extends Component {
 
     componentDidMount() {
         this.setUser()
-        eventEmitter.on(EVENT_TYPES.moodTemplate, this.settingState)
         this.addEventListener("click", this.onClick)
-        console.log('mount');
     }
     
     componentWillUnmount() {
-        eventEmitter.off(EVENT_TYPES.moodTemplate, this.settingState);
         this.removeEventListener("click", this.onClick);
-        console.log('Unmount');
     }
 }
 

@@ -10,4 +10,4 @@ export class MemoDescriptionTemplate extends Component {
   }
 }
 
-customElements.define("memo-description-template", MemoDescriptionTemplate)
+customElements.define("ui-memo-description-template", MemoDescriptionTemplate)
