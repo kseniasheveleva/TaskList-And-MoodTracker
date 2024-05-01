@@ -6,4 +6,5 @@ export const ROUTES = {
   userHome: "/h",
   todo: "/todo",
   moodTracker: "/mood-tracker",
+  moodTrackerRecords: "/mood-tracker-records",
 }

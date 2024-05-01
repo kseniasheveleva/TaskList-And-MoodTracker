@@ -1,5 +1,6 @@
 import { ROUTES } from "../../constants/routes";
 import { Component } from "../../core/Component";
+import { useTrackerData } from "../../hooks/useTrackerData";
 import { useUserStore } from "../../hooks/useUserStore";
 import { extractFormData } from "../../utils/extractFormData";
 import template from "./mood-tracker.template.hbs";
@@ -43,6 +44,7 @@ export class MoodTracker extends Component {
     onClick = (evt) => {
         evt.preventDefault()
         const backBtn = evt.target.closest('.go-back-btn');
+        const skipBtn = evt.target.closest('.skip-btn');
         const emojiBtn = evt.target.closest('.emoji-btn');
         const submitFirstForm = evt.target.closest('.submit-first-form');
         const submitSecondForm = evt.target.closest('.submit-second-form');
@@ -58,23 +60,34 @@ export class MoodTracker extends Component {
         if (submitFirstForm) {
             const form = this.querySelector('.form-first');
             const formData = extractFormData(form);
-            this.setStateN({
-                ...this.state, data: {...this.state.data, ...formData}
-            })
-            this.moveForward()
+            const value = Object.values(formData)[0]
+            if (value) {
+                this.setStateN({
+                    ...this.state, data: {...this.state.data, ...formData}
+                })
+                this.moveForward()
+            }
         }
         
         if (submitSecondForm) {
             const form = this.querySelector('.form-second');
             const formData = extractFormData(form);
-            this.setStateN({
-                ...this.state, data: {...this.state.data, ...formData}
-            })
-            console.log('MOVE FORWARD', this.state.data);
+            const value = Object.values(formData)[0]
+            if (value) {
+                this.setStateN({
+                    ...this.state, data: {...this.state.data, ...formData}
+                })
+                console.log('MOVE FORWARD', this.state.data);
+                
+            }
         }
 
         if (backBtn) {
             return this.goBack()
+        }
+
+        if (skipBtn) {
+            return this.moveForward()
         }
     }
     

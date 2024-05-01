@@ -4,5 +4,4 @@ export const EVENT_TYPES = {
   toastNotification: "ui:toast:notification",
   modal: "ui:modal",
   task: "task:state",
-  moodTemplate: "ui:mood:template",
 }

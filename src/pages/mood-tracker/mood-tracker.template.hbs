@@ -8,11 +8,11 @@
   
     <nav class="flex items-center gap-8">
       <router-link href="${props.routes.todo}" label="ToDo" class="text-lime-950 text-xl"></router-link>
-      <router-link href="${props.routes.userHome}" label="Diary" class="text-lime-950 text-xl"></router-link>
+      <router-link href="${props.routes.moodTrackerRecords}" label="Your Records" class="text-lime-950 text-xl"></router-link>
     </nav>
   </header>
 
-  <div class="container min-h-52 grid grid-rows-layout mx-auto my-12 bg-slate-100 rounded-2xl p-12">
+  <main class="container min-h-52 grid grid-rows-layout mx-auto my-12 bg-slate-100 rounded-2xl p-12">
     <div class="header flex items-center justify-center bg-zinc-300 rounded-t-xl"><p class="text-2xl py-5">How are you feeling today?</p></div>
     <div class="body h-full flex items-center justify-center">
       {{!-- templates --}}
@@ -23,5 +23,5 @@
     <div class="footer flex gap-4 pt-5 border-t-2 border-lime-950">
       <button class="go-back-btn py-2.5 px-5 ms-3 text-lg font-medium text-lime-950 bg-white rounded-lg border border-gray-200 hover:text-slate-500"><p>Go Back</p></button>
     </div>
-  </div>
+  </main>
 </div>

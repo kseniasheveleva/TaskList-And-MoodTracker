@@ -9,6 +9,7 @@ import "./pages/sign-up/sign-up.component";
 import "./pages/user-home/user-home.component";
 import "./pages/todo/todo.components";
 import "./pages/mood-tracker/mood-tracker.component";
+import "./pages/mood-tracker-records/mood-tracker-records.component";
 
 import "./components/button/button.component";
 import "./components/input/input.component";
