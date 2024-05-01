@@ -11,9 +11,7 @@ import { createTaskApi, deleteTaskApi, getTaskApi, getTaskByIdApi, updateTaskApi
 import { createCategoryApi, deleteCategoryApi, getCategoryApi } from "../../api/categories";
 import { CATEGORIES_COLORS } from "../../constants/colors";
 import dayjs from 'dayjs'
-import { EVENT_TYPES } from "../../constants/eventTypes";
-import { document } from "postcss";
-import { Satellite } from "lucide-static";
+
 
 
 export class ToDo extends Component {

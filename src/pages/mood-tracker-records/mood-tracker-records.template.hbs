@@ -18,6 +18,16 @@
       <div class="w-full min-h-16 bg-stone-300 text-3xl flex items-center justify-center font-medium rounded-lg">
         <p>Emotions</p>
       </div>
+      <div class="">
+        {{#each data}}
+          <ui-mood-record-card 
+          emoji-type="{{this.chosenEmoji}}"
+          emotion-description="{{this.emotionDescription}}"
+          memo-description="{{this.memoDescription}}"
+          created-at="{{this.createdAt}}"
+          ></ui-mood-record-card>
+        {{/each}}
+      </div>
     </div>
 
     <div class="col-2 pl-12">

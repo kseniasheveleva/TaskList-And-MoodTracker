@@ -1,8 +1,12 @@
+import { createMoodRecordApi } from "../../api/mood";
 import { ROUTES } from "../../constants/routes";
+import { TOAST_TYPE } from "../../constants/toast";
 import { Component } from "../../core/Component";
-import { useTrackerData } from "../../hooks/useTrackerData";
+import { useNavigate } from "../../hooks/useNavigate";
+import { useToastNotification } from "../../hooks/useToastNavigation";
 import { useUserStore } from "../../hooks/useUserStore";
 import { extractFormData } from "../../utils/extractFormData";
+import dayjs from 'dayjs'
 import template from "./mood-tracker.template.hbs";
 
 
@@ -41,10 +45,26 @@ export class MoodTracker extends Component {
     }
 
 
+    createRecord() {
+        this.toggleIsLoading()
+        createMoodRecordApi({ uid: this.state.user.uid, 
+            data: {...this.state.data, createdAt: dayjs().format('DD/MM/YY')} })
+        .then(() => {
+            useToastNotification({ message: 'Success!', type: TOAST_TYPE.success })
+            useNavigate(ROUTES.moodTrackerRecords)
+        })
+        .catch(({ message }) => {
+            useToastNotification({ message })
+        })
+        .finally(() => this.toggleIsLoading())
+    }
+
+
     onClick = (evt) => {
         evt.preventDefault()
         const backBtn = evt.target.closest('.go-back-btn');
         const skipBtn = evt.target.closest('.skip-btn');
+        const skipDoneBtn = evt.target.closest('.skip-done-btn');
         const emojiBtn = evt.target.closest('.emoji-btn');
         const submitFirstForm = evt.target.closest('.submit-first-form');
         const submitSecondForm = evt.target.closest('.submit-second-form');
@@ -78,7 +98,7 @@ export class MoodTracker extends Component {
                     ...this.state, data: {...this.state.data, ...formData}
                 })
                 console.log('MOVE FORWARD', this.state.data);
-                
+                this.createRecord()
             }
         }
 
@@ -88,6 +108,10 @@ export class MoodTracker extends Component {
 
         if (skipBtn) {
             return this.moveForward()
+        }
+
+        if (skipDoneBtn) {
+            return this.createRecord()
         }
     }
     

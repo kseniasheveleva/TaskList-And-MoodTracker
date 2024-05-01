@@ -1,0 +1,18 @@
+<div class="min-h-28 w-full relative border-2 text-stone-900 bg-stone-300 border-stone-950 p-4 rounded-md mt-4 flex flex-col">
+  <div class="flex gap-7 items-center">
+    <div class="border border-stone-950 rounded-full w-20 h-20">
+      <img src="{{emoji}}" alt="emoji-img">
+    </div>
+    {{#if title}}
+      <div class="text-2xl p-2 bg-stone-400 min-w-28 rounded-lg text-center"><p>{{title}}</p></div> 
+    {{/if}}
+  </div>
+  <div class="ml-28">{{description}}</div>
+
+  <div class="absolute right-4 top-3 flex flex-col gap-3 justify-end">
+    <p class="text-lg">{{createdAt}}</p>
+    <button class="text-3xl text-stone-900">
+      <i class="icon-badge-x "></i>
+    </button>
+  </div>
+</div>

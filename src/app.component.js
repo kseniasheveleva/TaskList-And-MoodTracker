@@ -22,6 +22,7 @@ import "./components/task-card/task-card.component";
 import "./components/mood-template-first/mood-template-first.component";
 import "./components/mood-template-second/mood-template-second.component";
 import "./components/mood-template-third/mood-template-third.component";
+import "./components/mood-record-card/mood-record-card.component";
 import { ROUTES } from "./constants/routes";
 import { useUserStore } from "./hooks/useUserStore";
 import { authService } from "./services/Auth";
