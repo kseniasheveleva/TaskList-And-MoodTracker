@@ -86,7 +86,6 @@ export class ToDo extends Component {
       getTaskApi(this.state.user.uid)
       .then(({ data }) => {
         if (data) {
-          console.log('LOAD ALL TASKS',data);
           this.setState({
             ...this.state,
             categories: this.state.categories.map((category) => {
@@ -164,7 +163,6 @@ export class ToDo extends Component {
 
   loadAllCategories = () => {
     if (this.state.user?.uid) {
-      console.log('papappapapa');
       this.toggleIsLoading();
       getCategoryApi(this.state.user.uid)
         .then(({ data }) => {
@@ -178,7 +176,6 @@ export class ToDo extends Component {
                 titleId: item.title.toLowerCase().replaceAll(' ', '-')
               }) : [],
             });
-            console.log('loadAllCategories', this.state.categories);
             this.loadAllTasks();
           } else {
             this.setState({...this.state, categories: []})
@@ -319,7 +316,6 @@ export class ToDo extends Component {
     if (categoryLink) {
       const id = categoryLink.dataset.link
       const el = this.querySelector(`#${id}`)
-      console.log(el);
       el.scrollIntoView({behavior: 'smooth', block: 'start'})
     }
   }

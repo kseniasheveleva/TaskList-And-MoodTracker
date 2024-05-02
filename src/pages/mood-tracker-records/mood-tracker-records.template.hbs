@@ -1,5 +1,5 @@
-<ui-loader loading="{{isLoading}}"></ui-loader>
-<div class="min-h-screen w-full bg-slate-800 grid grid-rows-layout">
+<div class="min-h-screen w-full bg-slate-800 grid grid-rows-layout relative">
+<ui-loader loading="{{isLoading}}" class="absolute bg-white"></ui-loader>
   <header class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
     <button class="super-btn border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
       <i class="icon-arrow-big-left text-lime-950  w-5 h-5"></i>
@@ -7,20 +7,21 @@
     </button>
     
     <nav class="flex items-center gap-8">
-      <router-link href="${props.routes.todo}" label="ToDo" class="text-lime-950 text-xl"></router-link>
       <router-link href="${props.routes.moodTracker}" label="Create New Record"
         class="text-lime-950 text-xl"></router-link>
+      <router-link href="${props.routes.todo}" label="ToDo" class="text-lime-950 text-xl"></router-link>
     </nav>
   </header>
 
-  <main class="container min-h-52 grid grid-cols-layout mx-auto my-12 bg-slate-100 rounded-2xl p-12 w-full">
-    <div class="col-1 min-w-[700px] border-r-2 border-stone-950 pr-12">
-      <div class="w-full min-h-16 bg-stone-300 text-3xl flex items-center justify-center font-medium rounded-lg">
+  <main class="container grid grid-cols-layout mx-auto my-12 bg-slate-100 rounded-2xl p-12 w-full max-h-[898px]">
+    <div class="col-1 min-w-[700px] border-r-2 border-stone-950 pr-12 max-h-[840px]">
+      <div class="w-full h-16 bg-stone-300 text-3xl mb-4 flex items-center justify-center font-medium rounded-lg">
         <p>Emotions</p>
       </div>
-      <div class="">
+      <div class="h-[85%] overflow-y-auto">
         {{#each data}}
           <ui-mood-record-card 
+          data-id="{{this.id}}"
           emoji-type="{{this.chosenEmoji}}"
           emotion-description="{{this.emotionDescription}}"
           memo-description="{{this.memoDescription}}"
@@ -30,11 +31,26 @@
       </div>
     </div>
 
-    <div class="col-2 pl-12">
-      <div class="w-full min-h-16 bg-stone-300 text-3xl flex items-center justify-center font-medium rounded-lg">
+    <div class="col-2  pl-12">
+      <div class="w-full h-16 bg-stone-300 text-3xl flex items-center justify-center font-medium rounded-lg">
         <p>Statistics</p>
       </div>
+      <div class="box-border h-3/5 p-5 flex justify-center border-b-2 border-stone-950">
+          <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
 
-    </div>
+      <div class="box-border h-[26%] mt-8 w-full rounded-lg border-2 border-stone-950 bg-stone-300 flex items-center">
+        <div class="row flex flex-wrap gap-x-28 gap-y-3 items-center justify-center">
+          {{#each emotes}}
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 emoji-img">
+              <img src="{{this.img}}" alt="emoji">
+            </div>
+            <p class="text-lg percentage">{{this.percentage}}%</p>  
+          </div>
+          {{/each}}
+        </div>
+
+      </div>
   </main>
 </div>
