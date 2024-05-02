@@ -46,7 +46,12 @@
             <div class="w-20 h-20 emoji-img">
               <img src="{{this.img}}" alt="emoji">
             </div>
-            <p class="text-lg percentage">{{this.percentage}}%</p>  
+            <p class="text-lg percentage">
+              {{#if this.percentage}}
+              {{this.percentage}}%
+              {{else}} 0%
+              {{/if}}
+            </p>  
           </div>
           {{/each}}
         </div>

@@ -1,5 +1,5 @@
-  <ui-loader loading="{{isLoading}}" class="bg-white"></ui-loader>
-<div class="min-h-screen w-full bg-slate-800 grid grid-rows-layout">
+<div class="min-h-screen w-full bg-slate-800 grid grid-rows-layout relative">
+  <ui-loader loading="{{isLoading}}" class="bg-white absolute"></ui-loader>
   <header class="flex justify-between items-center h-24 py-5 px-24 bg-purple-100">
     <button class="super-btn border border-lime-950 p-2 rounded-lg text-xl hover:border-slate-400">
       <i class="icon-arrow-big-left text-lime-950  w-5 h-5"></i>
@@ -15,10 +15,7 @@
   <main class="container min-h-52 grid grid-rows-layout mx-auto my-12 bg-slate-100 rounded-2xl p-12">
     <div class="header flex items-center justify-center bg-zinc-300 rounded-t-xl"><p class="text-2xl py-5">How are you feeling today?</p></div>
     <div class="body h-full flex items-center justify-center">
-      {{!-- templates --}}
       <ui-choose-emoji-template class="tmp"></ui-choose-emoji-template>
-      {{!-- <ui-emotion-description-template></ui-emotion-description-template> --}}
-      {{!-- <ui-memo-description-template></ui-memo-description-template> --}}
     </div>
     <div class="footer flex gap-4 pt-5 border-t-2 border-lime-950">
       <button class="go-back-btn py-2.5 px-5 ms-3 text-lg font-medium text-lime-950 bg-white rounded-lg border border-gray-200 hover:text-slate-500"><p>Go Back</p></button>

@@ -27,7 +27,10 @@ export class SignUp extends Component {
 
   registerUser = (evt) => {
     evt.preventDefault();
-    const { email, password, ...rest } = extractFormData(evt.target);
+    const { email, password, confirmPassword, ...rest } = extractFormData(evt.target);
+    if (password !== confirmPassword) {
+      useToastNotification({ message: 'Passwords do not match' })
+    } else {
     this.toggleIsLoading();
     const { setUser } = useUserStore();
     authService
@@ -48,7 +51,7 @@ export class SignUp extends Component {
       .finally(() => {
         this.toggleIsLoading();
       });
-  };
+  }};
 
   componentDidMount() {
     this.addEventListener("submit", this.registerUser);

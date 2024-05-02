@@ -82,7 +82,14 @@ export class MoodTrackerRecords extends Component {
           })
           this.countPercentage();
         } else {
-          this.setState({ ...this.state, data: [] })
+          this.setState({ ...this.state,
+            data: [],
+            emotes: this.state.emotes.map(obj => {
+              return {
+                ...obj,
+                percentage: 0
+              }
+            }) })
         }
       })
       .catch(({ message }) => {
@@ -106,7 +113,9 @@ export class MoodTrackerRecords extends Component {
       useToastNotification({ message: 'Record was deleted.', type: TOAST_TYPE.success })
     })
     .catch(({ message }) => useToastNotification({ message }))
-    .finally(() => this.toggleIsLoading())
+    .finally(() => {
+      this.toggleIsLoading()
+    })
   }
   
   //__________________________________________________
@@ -122,7 +131,7 @@ export class MoodTrackerRecords extends Component {
             data: this.state.emotes.map(obj => {
               return obj.percentage
             }),
-            borderColor: '##0c0a09',
+            // borderColor: '##0c0a09',
             backgroundColor: ['#F5DA95', '#E29583', '#959796', '#3C5A64', '#BA4531' ],
           },
         ] 
