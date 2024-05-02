@@ -27,10 +27,13 @@ export class SignUp extends Component {
 
   registerUser = (evt) => {
     evt.preventDefault();
-    const { email, password, confirmPassword, ...rest } = extractFormData(evt.target);
+    const { email, password, confirmPassword, displayName} = extractFormData(evt.target);
     if (password !== confirmPassword) {
       useToastNotification({ message: 'Passwords do not match' })
-    } else {
+    } else if(displayName === '') {
+      useToastNotification({ message: 'Enter you name' })
+    }
+    else {
     this.toggleIsLoading();
     const { setUser } = useUserStore();
     authService

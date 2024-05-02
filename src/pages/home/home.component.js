@@ -30,7 +30,7 @@ export class HomePage extends Component {
         ...this.state,
         links: [
           {
-            label: "Lobby",
+            label: "Your Page",
             href: ROUTES.userHome,
           }
         ]
